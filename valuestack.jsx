@@ -15,14 +15,14 @@ function ValueStack() {
       <div className="container">
         <BSF.Reveal as="div" className="section-header">
           <span className="eyebrow">The full picture</span>
-          <h2 className="section-title">£{total} of help. £27 tonight.</h2>
+          <h2 className="section-title">£{total} of help. £17 tonight.</h2>
           <p className="subheadline">See exactly what you&rsquo;re getting, and what it would cost separately.</p>
         </BSF.Reveal>
 
         <BSF.Reveal as="div" className="stats-row" index={1}>
           <Stat value="5" label="Items included" />
           <Stat value={`£${total}`} label="Total value" variant="faint" />
-          <Stat value="£27" label="Your price today" variant="gold" />
+          <Stat value="£17" label="Your price today" variant="gold" />
           <Stat value="7" label="Night guarantee" />
         </BSF.Reveal>
 
@@ -43,14 +43,14 @@ function ValueStack() {
 
         <BSF.Reveal as="div" className="your-price" index={3}>
           <div className="your-price-label">Your price tonight</div>
-          <div className="your-price-amount">£27</div>
+          <div className="your-price-amount">£17</div>
         </BSF.Reveal>
 
         <BSF.Reveal as="div" className="cta-wrap" index={4}>
           <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-            Start tonight &mdash; £27
+            Start tonight for £17
           </a>
-          <span className="guarantee-microcopy">7-night money-back guarantee &mdash; no questions asked</span>
+          <span className="guarantee-microcopy">7-night money-back guarantee</span>
         </BSF.Reveal>
       </div>
     </section>

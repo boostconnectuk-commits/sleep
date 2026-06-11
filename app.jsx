@@ -42,9 +42,9 @@ function StickyCta() {
     <div className={`sticky-cta${visible ? " is-visible" : ""}`} aria-hidden={!visible}>
       <div className="sticky-cta-inner">
         <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-          Start tonight &mdash; £27
+          Start tonight for £17
         </a>
-        <span className="sticky-cta-guarantee">7-night money-back guarantee &mdash; no questions asked</span>
+        <span className="sticky-cta-guarantee">7-night money-back guarantee</span>
       </div>
     </div>
   );

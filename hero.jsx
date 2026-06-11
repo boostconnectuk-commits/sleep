@@ -239,7 +239,7 @@ function Hero() {
         </p>
 
         <p className="subheadline hero-subheadline hero-animate" style={{ "--hero-delay": 3 }}>
-          Seven guided nights to break the burnout sleep loop &mdash; for the person who&rsquo;s exhausted all day and wide awake at 3am.
+          Seven guided nights to break the burnout sleep loop, for the person who&rsquo;s exhausted all day and wide awake at 3am.
         </p>
 
         <p className="quote hero-quote hero-animate" style={{ "--hero-delay": 4 }}>
@@ -257,16 +257,16 @@ function Hero() {
         <div className="price-stack hero-animate" style={{ "--hero-delay": 6 }}>
           <div className="price-row">
             <BSF.PriceStrike amount="£97" />
-            <span className="price-new">£27</span>
+            <span className="price-new">£17</span>
           </div>
           <span className="price-label">your price today</span>
         </div>
 
         <div className="hero-cta-wrap hero-animate" style={{ "--hero-delay": 7 }}>
           <a href="#offer" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-            Start tonight &mdash; £27
+            Start my 7-night reset
           </a>
-          <span className="guarantee-microcopy">7-night money-back guarantee &mdash; no questions asked</span>
+          <span className="guarantee-microcopy">7-night money-back guarantee</span>
         </div>
       </div>
     </section>

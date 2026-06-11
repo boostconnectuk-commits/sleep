@@ -26,7 +26,7 @@ function Checkout({ open, onClose }) {
   const [bumpAdded, setBumpAdded] = React.useState(false);
 
   const total = BSF.BUNDLE_ITEMS.reduce((sum, item) => sum + item.value, 0);
-  const bundlePrice = 27;
+  const bundlePrice = 17;
   const savings = total - bundlePrice;
   const savingsPct = Math.round((savings / total) * 100);
   const totalToday = bundlePrice + (bumpAdded ? ORDER_BUMP.price : 0);
@@ -202,7 +202,7 @@ function Checkout({ open, onClose }) {
               </div>
               <h2 className="checkout-order-title">You&rsquo;re in.</h2>
               <p className="checkout-order-sub">
-                Check your email for instant access to The Burnout Sleep Fix &mdash; your first night starts
+                Check your email for instant access to The Burnout Sleep Fix. Your first night starts
                 tonight.
               </p>
             </div>
@@ -212,7 +212,7 @@ function Checkout({ open, onClose }) {
             <div className="checkout-anim" style={{ "--reveal-index": 0 }}>
               <span className="eyebrow">Your order</span>
               <h2 className="checkout-order-title">The Burnout Sleep Fix</h2>
-              <p className="checkout-order-sub">Seven nights to real sleep &mdash; everything included.</p>
+              <p className="checkout-order-sub">Seven nights to real sleep. Everything included.</p>
             </div>
 
             <ul className="checkout-items">
@@ -270,7 +270,7 @@ function Checkout({ open, onClose }) {
             <div className="checkout-anim" style={{ "--reveal-index": 0 }}>
               <span className="eyebrow">Secure checkout</span>
               <h2 className="checkout-order-title">Complete your order</h2>
-              <p className="checkout-order-sub">Instant access &mdash; start tonight.</p>
+              <p className="checkout-order-sub">Instant access. Start tonight.</p>
             </div>
 
             <div className="checkout-fields">
@@ -288,7 +288,7 @@ function Checkout({ open, onClose }) {
                 {stripeStatus === "unconfigured" && (
                   <div className="checkout-card-mount">
                     <i data-lucide="credit-card" aria-hidden="true"></i>
-                    Payment setup pending &mdash; add your Stripe API keys in Vercel to enable checkout.
+                    Payment setup pending. Add your Stripe API keys in Vercel to enable checkout.
                   </div>
                 )}
                 {stripeStatus === "loading" && (
@@ -324,7 +324,7 @@ function Checkout({ open, onClose }) {
             {paymentStatus === "error" && paymentError && (
               <div className="checkout-pay-error">{paymentError}</div>
             )}
-            <span className="guarantee-microcopy">7-night money-back guarantee &mdash; no questions asked</span>
+            <span className="guarantee-microcopy">7-night money-back guarantee</span>
 
             <div className="checkout-trust-row checkout-anim" style={{ "--reveal-index": 5 }}>
               <span>
@@ -343,8 +343,7 @@ function Checkout({ open, onClose }) {
               <div>
                 <div className="checkout-guarantee-box-title">Try it for seven nights.</div>
                 <div className="checkout-guarantee-box-desc">
-                  If it doesn&rsquo;t work, it&rsquo;s free. Email us within 7 nights for a full refund &mdash; no
-                  questions asked.
+                  If it doesn&rsquo;t work, it&rsquo;s free. Email us within 7 nights for a full refund.
                 </div>
               </div>
             </div>

@@ -139,8 +139,8 @@ function Guarantee() {
           <GuaranteeBadge />
           <h2 className="section-title">Try it for seven nights. If it doesn&rsquo;t work, it&rsquo;s free.</h2>
           <p className="subheadline">
-            Use the full bundle for a week. If you&rsquo;re not sleeping better, email us and we&rsquo;ll refund you in full
-            &mdash; no forms, no hoops, no hard feelings.
+            Use the full bundle for a week. If you&rsquo;re not sleeping better, email us and we&rsquo;ll refund you in full,
+            no forms, no hoops, no hard feelings.
           </p>
         </BSF.Reveal>
 
@@ -158,9 +158,9 @@ function Guarantee() {
 
         <BSF.Reveal as="div" className="cta-wrap" index={2}>
           <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-            Start tonight &mdash; £27
+            Start tonight for £17
           </a>
-          <span className="guarantee-microcopy">7-night money-back guarantee &mdash; no questions asked</span>
+          <span className="guarantee-microcopy">7-night money-back guarantee</span>
         </BSF.Reveal>
       </div>
     </section>
@@ -183,9 +183,9 @@ function FinalCTA() {
 
         <BSF.Reveal as="div" className="cta-wrap" index={2}>
           <a href="#" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-            Start tonight &mdash; £27
+            Start tonight for £17
           </a>
-          <span className="guarantee-microcopy">7-night money-back guarantee &mdash; no questions asked</span>
+          <span className="guarantee-microcopy">7-night money-back guarantee</span>
         </BSF.Reveal>
       </div>
     </section>
