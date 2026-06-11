@@ -1,0 +1,89 @@
+/* Root component — assembles every section, wires up the sticky CTA bar
+   and re-runs lucide.createIcons() once everything has mounted. */
+
+function StickyCta() {
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const hero = document.querySelector(".hero");
+    const finalCta = document.getElementById("cta");
+    if (!hero || !finalCta || typeof IntersectionObserver === "undefined") return undefined;
+
+    let heroVisible = true;
+    let ctaVisible = false;
+    const update = () => setVisible(!heroVisible && !ctaVisible);
+
+    const heroObserver = new IntersectionObserver(
+      ([entry]) => {
+        heroVisible = entry.isIntersecting;
+        update();
+      },
+      { threshold: 0 }
+    );
+
+    const ctaObserver = new IntersectionObserver(
+      ([entry]) => {
+        ctaVisible = entry.isIntersecting;
+        update();
+      },
+      { threshold: 0.2 }
+    );
+
+    heroObserver.observe(hero);
+    ctaObserver.observe(finalCta);
+
+    return () => {
+      heroObserver.disconnect();
+      ctaObserver.disconnect();
+    };
+  }, []);
+
+  return (
+    <div className={`sticky-cta${visible ? " is-visible" : ""}`} aria-hidden={!visible}>
+      <div className="sticky-cta-inner">
+        <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
+          Start tonight &mdash; £27
+        </a>
+        <span className="sticky-cta-guarantee">7-night money-back guarantee &mdash; no questions asked</span>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [checkoutOpen, setCheckoutOpen] = React.useState(false);
+
+  BSF.openCheckout = (e) => {
+    if (e) e.preventDefault();
+    setCheckoutOpen(true);
+  };
+
+  React.useEffect(() => {
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+  }, []);
+
+  return (
+    <React.Fragment>
+      <TweaksPanel />
+      <main>
+        <Hero />
+        <hr className="section-divider" />
+        <Bundle />
+        <hr className="section-divider" />
+        <ValueStack />
+        <hr className="section-divider" />
+        <Testimonials />
+        <hr className="section-divider" />
+        <Guarantee />
+        <hr className="section-divider" />
+        <FinalCTA />
+      </main>
+      <StickyCta />
+      <Checkout open={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
