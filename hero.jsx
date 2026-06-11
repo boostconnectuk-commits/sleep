@@ -126,7 +126,17 @@ BSF.useCountdown = function useCountdown(durationSeconds) {
     }
 
     const tick = () => {
-      setRemaining(Math.max(0, Math.round((end - Date.now()) / 1000)));
+      let rem = Math.round((end - Date.now()) / 1000);
+      if (rem <= 0) {
+        end = Date.now() + durationSeconds * 1000;
+        try {
+          localStorage.setItem(STORAGE_KEY, String(end));
+        } catch (err) {
+          /* storage unavailable — countdown still resets for this session */
+        }
+        rem = durationSeconds;
+      }
+      setRemaining(rem);
     };
 
     tick();
@@ -219,7 +229,7 @@ function HeroParticles() {
 }
 
 function Hero() {
-  const { hours, minutes, seconds } = BSF.useCountdown(2 * 60 * 60);
+  const { hours, minutes, seconds } = BSF.useCountdown(48 * 60 * 60);
 
   return (
     <section className="hero section">
@@ -234,9 +244,14 @@ function Hero() {
           You&rsquo;re exhausted. But your body won&rsquo;t let you sleep.
         </h1>
 
-        <p className="hero-social-proof hero-animate" style={{ "--hero-delay": 2 }}>
-          Already helping 2,400+ people sleep through the night.
-        </p>
+        <div className="hero-social-proof-row hero-animate" style={{ "--hero-delay": 2 }}>
+          <div className="hero-social-proof-stars" aria-hidden="true">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <BSF.StarIcon key={i} />
+            ))}
+          </div>
+          <p className="hero-social-proof">Already helping 2,400+ people sleep through the night.</p>
+        </div>
 
         <p className="subheadline hero-subheadline hero-animate" style={{ "--hero-delay": 3 }}>
           Seven guided nights to break the burnout sleep loop, for the person who&rsquo;s exhausted all day and wide awake at 3am.

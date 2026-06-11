@@ -1,12 +1,4 @@
 /* Animated full-screen checkout overlay, opened via BSF.openCheckout. */
-const ORDER_BUMP = {
-  icon: "moon-star",
-  name: "The Sleep Sounds Library",
-  description: "8 hours of low, ambient sound for the nights your mind won't switch off.",
-  price: 9,
-  compareAt: 19
-};
-
 function CheckoutItem({ item, index }) {
   return (
     <li className="checkout-item checkout-anim" style={{ "--reveal-index": index }}>
@@ -23,14 +15,11 @@ function CheckoutItem({ item, index }) {
 }
 
 function Checkout({ open, onClose }) {
-  const [bumpAdded, setBumpAdded] = React.useState(false);
-
   const total = BSF.BUNDLE_ITEMS.reduce((sum, item) => sum + item.value, 0);
   const bundlePrice = 17;
   const savings = total - bundlePrice;
   const savingsPct = Math.round((savings / total) * 100);
-  const totalToday = bundlePrice + (bumpAdded ? ORDER_BUMP.price : 0);
-  const pulsing = BSF.usePulse(totalToday);
+  const totalToday = bundlePrice;
 
   /* stripeStatus: idle | loading | unconfigured | ready | error */
   const [stripeStatus, setStripeStatus] = React.useState("idle");
@@ -41,7 +30,6 @@ function Checkout({ open, onClose }) {
   const stripeRef = React.useRef(null);
   const elementsRef = React.useRef(null);
   const paymentElementRef = React.useRef(null);
-  const paymentIntentIdRef = React.useRef(null);
   const initStartedRef = React.useRef(false);
 
   React.useEffect(() => {
@@ -90,8 +78,6 @@ function Checkout({ open, onClose }) {
           return;
         }
 
-        paymentIntentIdRef.current = intent.paymentIntentId;
-
         const stripe = window.Stripe(config.publishableKey);
         const elements = stripe.elements({
           clientSecret: intent.clientSecret,
@@ -122,25 +108,6 @@ function Checkout({ open, onClose }) {
     return undefined;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
-  /* Keep the PaymentIntent amount in sync when the order bump is toggled. */
-  const isFirstAmountSync = React.useRef(true);
-  React.useEffect(() => {
-    if (isFirstAmountSync.current) {
-      isFirstAmountSync.current = false;
-      return;
-    }
-    if (!paymentIntentIdRef.current || stripeStatus !== "ready") return;
-
-    fetch("/api/update-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        paymentIntentId: paymentIntentIdRef.current,
-        amount: Math.round(totalToday * 100)
-      })
-    }).catch(() => {});
-  }, [totalToday, stripeStatus]);
 
   React.useEffect(() => {
     if (window.lucide && typeof window.lucide.createIcons === "function") {
@@ -189,9 +156,7 @@ function Checkout({ open, onClose }) {
             <i data-lucide="arrow-left" aria-hidden="true"></i>
             Back
           </button>
-          <span className="checkout-wordmark">
-            The Burnout <em>Sleep Fix</em>
-          </span>
+          <img src="assets/logo.png" alt="Tranquila Sleep" className="checkout-logo" />
         </header>
 
         <div className="checkout-body">
@@ -237,30 +202,9 @@ function Checkout({ open, onClose }) {
               You save £{savings} ({savingsPct}% off)
             </div>
 
-            <button
-              type="button"
-              className={`checkout-bump checkout-anim${bumpAdded ? " is-checked" : ""}`}
-              style={{ "--reveal-index": 8 }}
-              role="checkbox"
-              aria-checked={bumpAdded}
-              onClick={() => setBumpAdded((v) => !v)}
-            >
-              <span className="checkout-bump-box" aria-hidden="true">
-                <i data-lucide="check"></i>
-              </span>
-              <span className="checkout-bump-body">
-                <span className="checkout-bump-title">
-                  Add {ORDER_BUMP.name}
-                  <span className="checkout-bump-price">+£{ORDER_BUMP.price}</span>
-                  <span className="checkout-bump-was">was £{ORDER_BUMP.compareAt}</span>
-                </span>
-                <span className="checkout-bump-desc">{ORDER_BUMP.description}</span>
-              </span>
-            </button>
-
-            <div className="checkout-total-today checkout-anim" style={{ "--reveal-index": 9 }}>
+            <div className="checkout-total-today checkout-anim" style={{ "--reveal-index": 8 }}>
               <span className="checkout-total-today-label">Total today</span>
-              <span className="checkout-total-today-price" data-pulse={pulsing ? "true" : "false"}>
+              <span className="checkout-total-today-price">
                 £{totalToday}
               </span>
             </div>

@@ -1,6 +1,33 @@
 /* Root component — assembles every section, wires up the sticky CTA bar
    and re-runs lucide.createIcons() once everything has mounted. */
 
+function AnnouncementBar() {
+  const [hidden, setHidden] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setHidden(window.scrollY > 40);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className={`announcement-bar${hidden ? " is-hidden" : ""}`} aria-hidden={hidden}>
+      <div className="announcement-inner">
+        <img src="assets/logo.png" alt="Tranquila Sleep" className="announcement-logo" />
+        <span className="announcement-text">
+          The Burnout Sleep Fix
+          <span className="announcement-sep" aria-hidden="true">&bull;</span>
+          <s className="announcement-value">£97 value</s>
+          <span className="announcement-price">£17 today</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function StickyCta() {
   const [visible, setVisible] = React.useState(false);
 
@@ -67,6 +94,7 @@ function App() {
   return (
     <React.Fragment>
       <TweaksPanel />
+      <AnnouncementBar />
       <main>
         <Hero />
         <hr className="section-divider" />
