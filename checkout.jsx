@@ -32,6 +32,18 @@ function Checkout({ open, onClose }) {
   const totalToday = bundlePrice + (bumpAdded ? ORDER_BUMP.price : 0);
   const pulsing = BSF.usePulse(totalToday);
 
+  /* stripeStatus: idle | loading | unconfigured | ready | error */
+  const [stripeStatus, setStripeStatus] = React.useState("idle");
+  /* paymentStatus: idle | processing | success | error */
+  const [paymentStatus, setPaymentStatus] = React.useState("idle");
+  const [paymentError, setPaymentError] = React.useState(null);
+
+  const stripeRef = React.useRef(null);
+  const elementsRef = React.useRef(null);
+  const paymentElementRef = React.useRef(null);
+  const paymentIntentIdRef = React.useRef(null);
+  const initStartedRef = React.useRef(false);
+
   React.useEffect(() => {
     if (!open) return undefined;
     const previousOverflow = document.body.style.overflow;
@@ -50,8 +62,119 @@ function Checkout({ open, onClose }) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [open, onClose]);
 
+  /* Set up Stripe Elements (Payment Element) the first time the modal opens. */
+  React.useEffect(() => {
+    if (!open || initStartedRef.current) return undefined;
+    initStartedRef.current = true;
+    setStripeStatus("loading");
+
+    (async () => {
+      try {
+        const [config, intent] = await Promise.all([
+          fetch("/api/config").then((r) => r.json()),
+          fetch("/api/create-payment-intent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: Math.round(totalToday * 100) })
+          }).then((r) => r.json())
+        ]);
+
+        if (!config.publishableKey || intent.configured === false) {
+          setStripeStatus("unconfigured");
+          return;
+        }
+
+        if (intent.error || !intent.clientSecret) {
+          setPaymentError(intent.error || "Could not start checkout.");
+          setStripeStatus("error");
+          return;
+        }
+
+        paymentIntentIdRef.current = intent.paymentIntentId;
+
+        const stripe = window.Stripe(config.publishableKey);
+        const elements = stripe.elements({
+          clientSecret: intent.clientSecret,
+          appearance: {
+            theme: "night",
+            variables: {
+              colorPrimary: "#D4A86C",
+              colorBackground: "#161320",
+              colorText: "#F2EDE8",
+              colorDanger: "#D4939A",
+              fontFamily: "Inter, sans-serif",
+              borderRadius: "8px"
+            }
+          }
+        });
+
+        elements.create("payment").mount(paymentElementRef.current);
+
+        stripeRef.current = stripe;
+        elementsRef.current = elements;
+        setStripeStatus("ready");
+      } catch (err) {
+        setPaymentError(err.message);
+        setStripeStatus("error");
+      }
+    })();
+
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  /* Keep the PaymentIntent amount in sync when the order bump is toggled. */
+  const isFirstAmountSync = React.useRef(true);
+  React.useEffect(() => {
+    if (isFirstAmountSync.current) {
+      isFirstAmountSync.current = false;
+      return;
+    }
+    if (!paymentIntentIdRef.current || stripeStatus !== "ready") return;
+
+    fetch("/api/update-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paymentIntentId: paymentIntentIdRef.current,
+        amount: Math.round(totalToday * 100)
+      })
+    }).catch(() => {});
+  }, [totalToday, stripeStatus]);
+
+  React.useEffect(() => {
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+    }
+  }, [stripeStatus, paymentStatus]);
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();
+  };
+
+  const handlePay = async () => {
+    if (!stripeRef.current || !elementsRef.current) return;
+
+    setPaymentStatus("processing");
+    setPaymentError(null);
+
+    const { error, paymentIntent } = await stripeRef.current.confirmPayment({
+      elements: elementsRef.current,
+      confirmParams: { return_url: window.location.href },
+      redirect: "if_required"
+    });
+
+    if (error) {
+      setPaymentError(error.message || "Payment failed. Please try again.");
+      setPaymentStatus("error");
+      return;
+    }
+
+    if (paymentIntent && paymentIntent.status === "succeeded") {
+      setPaymentStatus("success");
+    } else {
+      setPaymentStatus("idle");
+    }
   };
 
   return (
@@ -72,6 +195,19 @@ function Checkout({ open, onClose }) {
         </header>
 
         <div className="checkout-body">
+          {paymentStatus === "success" ? (
+            <div className="checkout-success">
+              <div className="checkout-success-icon">
+                <i data-lucide="check-circle" aria-hidden="true"></i>
+              </div>
+              <h2 className="checkout-order-title">You&rsquo;re in.</h2>
+              <p className="checkout-order-sub">
+                Check your email for instant access to The Burnout Sleep Fix &mdash; your first night starts
+                tonight.
+              </p>
+            </div>
+          ) : (
+          <React.Fragment>
           <div className="checkout-order">
             <div className="checkout-anim" style={{ "--reveal-index": 0 }}>
               <span className="eyebrow">Your order</span>
@@ -148,9 +284,30 @@ function Checkout({ open, onClose }) {
                 <input id="checkout-name" type="text" placeholder="Jordan Smith" autoComplete="name" />
               </div>
 
-              <div className="checkout-card-mount checkout-anim" style={{ "--reveal-index": 3 }}>
-                <i data-lucide="credit-card" aria-hidden="true"></i>
-                Card details &mdash; secured by Stripe at checkout
+              <div className="checkout-anim" style={{ "--reveal-index": 3 }}>
+                {stripeStatus === "unconfigured" && (
+                  <div className="checkout-card-mount">
+                    <i data-lucide="credit-card" aria-hidden="true"></i>
+                    Payment setup pending &mdash; add your Stripe API keys in Vercel to enable checkout.
+                  </div>
+                )}
+                {stripeStatus === "loading" && (
+                  <div className="checkout-card-mount">
+                    <i data-lucide="loader" aria-hidden="true"></i>
+                    Loading secure payment form&hellip;
+                  </div>
+                )}
+                {stripeStatus === "error" && (
+                  <div className="checkout-card-mount">
+                    <i data-lucide="alert-triangle" aria-hidden="true"></i>
+                    Couldn&rsquo;t load the payment form{paymentError ? `: ${paymentError}` : "."}
+                  </div>
+                )}
+                <div
+                  ref={paymentElementRef}
+                  className="checkout-payment-element"
+                  style={{ display: stripeStatus === "ready" ? "block" : "none" }}
+                />
               </div>
             </div>
 
@@ -158,10 +315,15 @@ function Checkout({ open, onClose }) {
               type="button"
               className="btn btn-gold btn-block checkout-pay-btn checkout-anim"
               style={{ "--reveal-index": 4 }}
+              onClick={handlePay}
+              disabled={stripeStatus !== "ready" || paymentStatus === "processing"}
             >
               <i data-lucide="lock" aria-hidden="true"></i>
-              Pay £{totalToday}
+              {paymentStatus === "processing" ? "Processing…" : `Pay £${totalToday}`}
             </button>
+            {paymentStatus === "error" && paymentError && (
+              <div className="checkout-pay-error">{paymentError}</div>
+            )}
             <span className="guarantee-microcopy">7-night money-back guarantee &mdash; no questions asked</span>
 
             <div className="checkout-trust-row checkout-anim" style={{ "--reveal-index": 5 }}>
@@ -187,6 +349,8 @@ function Checkout({ open, onClose }) {
               </div>
             </div>
           </div>
+          </React.Fragment>
+          )}
         </div>
       </div>
     </div>

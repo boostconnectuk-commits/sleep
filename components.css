@@ -1457,6 +1457,25 @@ html.reduce-motion .sticky-cta {
   color: var(--color-text-faint);
 }
 
+.checkout-payment-element {
+  margin-top: 4px;
+}
+
+.checkout-card-mount svg.lucide-loader {
+  animation: spinSlow 1s linear infinite;
+}
+
+.checkout-pay-error {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-rose);
+  background: rgba(212, 147, 154, 0.08);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-rose);
+}
+
 .checkout-pay-btn {
   margin-top: 22px;
 }
@@ -1464,6 +1483,49 @@ html.reduce-motion .sticky-cta {
 .checkout-pay-btn svg {
   width: 16px;
   height: 16px;
+}
+
+.checkout-pay-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Checkout — success state                                                */
+/* ---------------------------------------------------------------------- */
+
+.checkout-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 64px 24px;
+  text-align: center;
+}
+
+.checkout-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background: var(--color-gold-soft);
+  border: 1px solid var(--color-border-rose);
+  color: var(--color-gold);
+}
+
+.checkout-success-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.checkout-success .checkout-order-sub {
+  max-width: 36ch;
 }
 
 .checkout-trust-row {
