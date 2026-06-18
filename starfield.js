@@ -27,16 +27,27 @@
     frag.appendChild(star);
   }
 
+  /* Sync each shooting star to the real clock instead of page-load time, so the
+     animation is always mid-cycle on arrival rather than restarting a fresh
+     wait every time the page opens. */
+  function syncedDelay(periodSeconds, offsetSeconds) {
+    var nowSeconds = Date.now() / 1000;
+    var phase = (nowSeconds + offsetSeconds) % periodSeconds;
+    return "-" + phase.toFixed(2) + "s";
+  }
+
   var shootingOne = document.createElement("span");
   shootingOne.className = "shooting";
   shootingOne.style.top = "12%";
   shootingOne.style.left = "55%";
+  shootingOne.style.animationDelay = syncedDelay(11, 3);
   frag.appendChild(shootingOne);
 
   var shootingTwo = document.createElement("span");
   shootingTwo.className = "shooting two";
   shootingTwo.style.top = "30%";
   shootingTwo.style.left = "10%";
+  shootingTwo.style.animationDelay = syncedDelay(14, 7.5);
   frag.appendChild(shootingTwo);
 
   container.appendChild(frag);

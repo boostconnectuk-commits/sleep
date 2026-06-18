@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: "gbp",
+      currency: "usd",
       automatic_payment_methods: { enabled: true }
     });
 

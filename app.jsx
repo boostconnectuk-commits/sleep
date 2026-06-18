@@ -20,8 +20,8 @@ function AnnouncementBar() {
         <span className="announcement-text">
           The Burnout Sleep Fix
           <span className="announcement-sep" aria-hidden="true">&bull;</span>
-          <s className="announcement-value">£97 value</s>
-          <span className="announcement-price">£17 today</span>
+          <s className="announcement-value">$149 value</s>
+          <span className="announcement-price">$29 today</span>
         </span>
       </div>
     </div>
@@ -69,9 +69,9 @@ function StickyCta() {
     <div className={`sticky-cta${visible ? " is-visible" : ""}`} aria-hidden={!visible}>
       <div className="sticky-cta-inner">
         <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-          Start tonight for £17
+          Start sleeping tonight for $29
         </a>
-        <span className="sticky-cta-guarantee">7-night money-back guarantee</span>
+        <span className="sticky-cta-guarantee">Risk-free for 30 days</span>
       </div>
     </div>
   );
@@ -100,6 +100,10 @@ function App() {
         <hr className="section-divider" />
         <SoundFamiliar />
         <hr className="section-divider" />
+        <TheShift />
+        <hr className="section-divider" />
+        <SolutionIntro />
+        <hr className="section-divider" />
         <SevenNights />
         <hr className="section-divider" />
         <Bundle />
@@ -110,10 +114,13 @@ function App() {
         <hr className="section-divider" />
         <Guarantee />
         <hr className="section-divider" />
+        <Faq />
+        <hr className="section-divider" />
         <FinalCTA />
       </main>
       <StickyCta />
       <Checkout open={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+      <Footer />
     </React.Fragment>
   );
 }

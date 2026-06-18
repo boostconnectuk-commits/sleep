@@ -9,14 +9,14 @@ function CheckoutItem({ item, index }) {
         <div className="checkout-item-name">{item.name}</div>
         <div className="checkout-item-format">{item.format}</div>
       </div>
-      <span className="checkout-item-value">£{item.value}</span>
+      <span className="checkout-item-value">${item.value}</span>
     </li>
   );
 }
 
 function Checkout({ open, onClose }) {
   const total = BSF.BUNDLE_ITEMS.reduce((sum, item) => sum + item.value, 0);
-  const bundlePrice = 17;
+  const bundlePrice = 29;
   const savings = total - bundlePrice;
   const savingsPct = Math.round((savings / total) * 100);
   const totalToday = bundlePrice;
@@ -189,23 +189,23 @@ function Checkout({ open, onClose }) {
             <div className="checkout-totals checkout-anim" style={{ "--reveal-index": 6 }}>
               <div className="checkout-total-row">
                 <span>Total value</span>
-                <BSF.PriceStrike key={open ? "open" : "closed"} amount={`£${total}`} />
+                <BSF.PriceStrike key={open ? "open" : "closed"} amount={`$${total}`} />
               </div>
               <div className="checkout-total-row is-bundle">
                 <span>Bundle price</span>
-                <span className="checkout-bundle-price">£{bundlePrice}</span>
+                <span className="checkout-bundle-price">${bundlePrice}</span>
               </div>
             </div>
 
             <div className="checkout-savings checkout-anim" style={{ "--reveal-index": 7 }}>
               <i data-lucide="sparkles" aria-hidden="true"></i>
-              You save £{savings} ({savingsPct}% off)
+              You save ${savings} ({savingsPct}% off)
             </div>
 
             <div className="checkout-total-today checkout-anim" style={{ "--reveal-index": 8 }}>
               <span className="checkout-total-today-label">Total today</span>
               <span className="checkout-total-today-price">
-                £{totalToday}
+                ${totalToday}
               </span>
             </div>
           </div>
@@ -263,12 +263,12 @@ function Checkout({ open, onClose }) {
               disabled={stripeStatus !== "ready" || paymentStatus === "processing"}
             >
               <i data-lucide="lock" aria-hidden="true"></i>
-              {paymentStatus === "processing" ? "Processing…" : `Pay £${totalToday}`}
+              {paymentStatus === "processing" ? "Processing…" : `Pay $${totalToday}`}
             </button>
             {paymentStatus === "error" && paymentError && (
               <div className="checkout-pay-error">{paymentError}</div>
             )}
-            <span className="guarantee-microcopy">7-night money-back guarantee</span>
+            <span className="guarantee-microcopy">30-day money-back guarantee</span>
 
             <div className="checkout-trust-row checkout-anim" style={{ "--reveal-index": 5 }}>
               <span>
@@ -285,9 +285,9 @@ function Checkout({ open, onClose }) {
             <div className="checkout-guarantee-box checkout-anim" style={{ "--reveal-index": 6 }}>
               <i data-lucide="shield" aria-hidden="true"></i>
               <div>
-                <div className="checkout-guarantee-box-title">Try it for seven nights.</div>
+                <div className="checkout-guarantee-box-title">Sleep on it. Literally.</div>
                 <div className="checkout-guarantee-box-desc">
-                  If it doesn&rsquo;t work, it&rsquo;s free. Email us within 7 nights for a full refund.
+                  Try it for 30 days. If it doesn&rsquo;t work, email us and we&rsquo;ll refund every cent.
                 </div>
               </div>
             </div>

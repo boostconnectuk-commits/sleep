@@ -46,9 +46,9 @@ BSF.Reveal = function Reveal({ as: Tag = "div", className = "", index = 0, style
 };
 
 /* ------------------------------------------------------------------ */
-/* PriceStrike — animated diagonal strike-through over a £ amount       */
+/* PriceStrike — animated diagonal strike-through over a $ amount       */
 /* ------------------------------------------------------------------ */
-BSF.PriceStrike = function PriceStrike({ amount = "£97", className = "" }) {
+BSF.PriceStrike = function PriceStrike({ amount = "$149", className = "" }) {
   const ref = React.useRef(null);
   const [drawn, setDrawn] = React.useState(false);
 
@@ -236,7 +236,6 @@ function Hero() {
       <HeroParticles />
       <div className="container hero-content">
         <div className="hero-eyebrow-wrap hero-animate" style={{ "--hero-delay": 0 }}>
-          <div className="hero-moon" aria-hidden="true" />
           <span className="eyebrow">For the exhausted-but-wired</span>
         </div>
 
@@ -250,11 +249,11 @@ function Hero() {
               <BSF.StarIcon key={i} />
             ))}
           </div>
-          <p className="hero-social-proof">Already helping 2,400+ people sleep through the night.</p>
+          <p className="hero-social-proof">Used by 3,200+ people who were done lying awake.</p>
         </div>
 
         <p className="subheadline hero-subheadline hero-animate" style={{ "--hero-delay": 3 }}>
-          Seven guided nights to break the burnout sleep loop, for the person who&rsquo;s exhausted all day and wide awake at 3am.
+          Seven guided nights to break the burnout-sleep loop, for the person who&rsquo;s drained all day and wide awake at 3am.
         </p>
 
         <p className="quote hero-quote hero-animate" style={{ "--hero-delay": 4 }}>
@@ -271,17 +270,17 @@ function Hero() {
 
         <div className="price-stack hero-animate" style={{ "--hero-delay": 6 }}>
           <div className="price-row">
-            <BSF.PriceStrike amount="£97" />
-            <span className="price-new">£17</span>
+            <BSF.PriceStrike amount="$149" />
+            <span className="price-new">$29</span>
           </div>
           <span className="price-label">your price today</span>
         </div>
 
         <div className="hero-cta-wrap hero-animate" style={{ "--hero-delay": 7 }}>
           <a href="#offer" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
-            Start my 7-night reset
+            Start sleeping tonight &rarr;
           </a>
-          <span className="guarantee-microcopy">7-night money-back guarantee</span>
+          <span className="guarantee-microcopy">30-day money-back guarantee</span>
         </div>
       </div>
     </section>

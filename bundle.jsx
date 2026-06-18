@@ -1,40 +1,41 @@
 /* The five items that make up the bundle. Shared with valuestack.jsx
-   so the names/values stay in sync (they must total £97). */
+   so the names/values stay in sync (they must total $149). Individual
+   values keep the same ratio as the original £97 stack (39:29:15:9:5). */
 BSF.BUNDLE_ITEMS = [
   {
     icon: "book-open",
-    name: "The Core Sleep Guide",
-    outcome: "The 3-phase wind-down method your nervous system actually responds to.",
+    name: "The Burnout Sleep Fix Core Guide",
+    outcome: "The 3-phase wind-down method your nervous system actually responds to. Read it once, use it every night.",
     format: "PDF Guide",
-    value: 39
+    value: 59
   },
   {
     icon: "headphones",
-    name: "7-Night Audio Series",
-    outcome: "One guided session per night. Breath, body scan, thought defusion.",
-    format: "7 Audio Sessions",
-    value: 29
-  },
-  {
-    icon: "list-checks",
-    name: "Sleep Onset Tracker",
-    outcome: "Tick each night off. Watch your sleep onset time drop.",
-    format: "Printable Tracker",
-    value: 15
+    name: "The 7-Night Audio Reset",
+    outcome: "Seven short guided sessions for eyes-closed, in-bed use. Each night targets a different layer of the stress response.",
+    format: "MP3 Audio Tracks",
+    value: 45
   },
   {
     icon: "alarm-clock",
-    name: "3am Rescue Kit",
-    outcome: "8 minutes from spiralling to asleep. Works mid-night.",
-    format: "Audio + Script",
-    value: 9
+    name: "The 3am Rescue Protocol",
+    outcome: "What to do when you wake up mid-night and the spiral starts. A step-by-step process that gets you back to sleep.",
+    format: "Quick-Reference PDF",
+    value: 23
   },
   {
     icon: "clipboard-list",
-    name: "Evening Reset Checklist",
-    outcome: "Print it. Put it where you'll see it. Your evening reset in one page.",
-    format: "1-Page Printable",
-    value: 5
+    name: "The Wind-Down Ritual Builder",
+    outcome: "Build the 60 minutes before bed into something your nervous system recognises as safe. Adapts to your day.",
+    format: "Interactive Worksheet",
+    value: 14
+  },
+  {
+    icon: "list-checks",
+    name: "The Burnout Sleep Tracker",
+    outcome: "Seven days of simple tracking that shows you what's actually changing. Paper-based. No screens.",
+    format: "Printable Tracker",
+    value: 8
   }
 ];
 
@@ -48,7 +49,7 @@ function BundleCard({ item, index }) {
       <p className="bundle-outcome">{item.outcome}</p>
       <div className="bundle-meta">
         <span>{item.format}</span>
-        <span className="bundle-value">£{item.value} value</span>
+        <span className="bundle-value">${item.value} value</span>
       </div>
     </BSF.Reveal>
   );
@@ -60,7 +61,7 @@ function Bundle() {
       <div className="container">
         <BSF.Reveal as="div" className="section-header">
           <span className="eyebrow">What&rsquo;s inside</span>
-          <h2 className="section-title">Everything you need for seven nights of real sleep</h2>
+          <h2 className="section-title">Everything you need. Nothing you don&rsquo;t.</h2>
           <p className="subheadline">Five tools, one evening routine. Use what you need, skip what you don&rsquo;t.</p>
         </BSF.Reveal>
 
