@@ -676,6 +676,136 @@ html.reduce-motion .hero-animate {
 }
 
 /* ---------------------------------------------------------------------- */
+/* Sound familiar (problem section)                                        */
+/* ---------------------------------------------------------------------- */
+
+.problem-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 52ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.problem-quote {
+  max-width: 32ch;
+  margin: 28px auto 0;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Seven-night timeline                                                     */
+/* ---------------------------------------------------------------------- */
+
+.night-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.night-step {
+  display: flex;
+  gap: 16px;
+}
+
+.night-step-rail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.night-step-marker {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border-rose);
+  background: var(--color-bg-soft);
+  color: var(--color-mauve);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.night-step-line {
+  flex: 1;
+  width: 1px;
+  min-height: 16px;
+  margin: 6px 0;
+  background: var(--color-border-rose);
+}
+
+.night-step-body {
+  flex: 1;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  transition: transform 200ms var(--ease-out), border-color 200ms ease;
+}
+
+.night-step:last-child .night-step-body {
+  margin-bottom: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .night-step-body:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-border-rose);
+  }
+}
+
+.night-step-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.night-step-desc {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.night-step.is-emphasis .night-step-marker {
+  width: 44px;
+  height: 44px;
+  font-size: 16px;
+  border-color: var(--color-gold);
+  background: var(--color-gold);
+  color: var(--color-gold-text);
+  box-shadow: var(--shadow-gold);
+}
+
+.night-step.is-emphasis .night-step-body {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-rose);
+}
+
+.night-step.is-emphasis .night-step-title {
+  font-size: 17px;
+  color: var(--color-gold);
+}
+
+.night-step.is-emphasis .night-step-desc {
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.night-timeline-footnote {
+  max-width: 38ch;
+  margin: 28px auto 0;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------- */
 /* Testimonials                                                             */
 /* ---------------------------------------------------------------------- */
 

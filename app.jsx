@@ -98,6 +98,10 @@ function App() {
       <main>
         <Hero />
         <hr className="section-divider" />
+        <SoundFamiliar />
+        <hr className="section-divider" />
+        <SevenNights />
+        <hr className="section-divider" />
         <Bundle />
         <hr className="section-divider" />
         <ValueStack />
