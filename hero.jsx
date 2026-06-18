@@ -243,15 +243,6 @@ function Hero() {
           You&rsquo;re exhausted. But your body won&rsquo;t let you sleep.
         </h1>
 
-        <div className="hero-social-proof-row hero-animate" style={{ "--hero-delay": 2 }}>
-          <div className="hero-social-proof-stars" aria-hidden="true">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <BSF.StarIcon key={i} />
-            ))}
-          </div>
-          <p className="hero-social-proof">Used by 3,200+ people who were done lying awake.</p>
-        </div>
-
         <p className="subheadline hero-subheadline hero-animate" style={{ "--hero-delay": 3 }}>
           Seven guided nights to break the burnout-sleep loop, for the person who&rsquo;s drained all day and wide awake at 3am.
         </p>

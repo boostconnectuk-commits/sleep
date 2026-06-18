@@ -188,33 +188,6 @@ html.reduce-motion .announcement-bar {
   gap: 10px;
 }
 
-.hero-social-proof-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.hero-social-proof-stars {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  color: var(--color-gold);
-}
-
-.hero-social-proof-stars svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-  stroke: none;
-}
-
-.hero-social-proof {
-  font-size: var(--fs-small);
-  color: var(--color-text-faint);
-  letter-spacing: 0.01em;
-}
-
 .hero-headline {
   width: 100%;
 }
@@ -385,9 +358,9 @@ html.reduce-motion .hero-animate {
 }
 
 .price-new {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: clamp(34px, 10vw, 46px);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-gold);
 }
 
@@ -472,7 +445,7 @@ html.reduce-motion .hero-animate {
 
 .bundle-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
@@ -480,18 +453,11 @@ html.reduce-motion .hero-animate {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 140px;
   padding: 16px;
   border-radius: var(--radius-lg);
   background: var(--color-bg-soft);
   border: 1px solid var(--color-border);
   transition: transform 200ms var(--ease-out), border-color 200ms ease;
-}
-
-.bundle-card:nth-child(5) {
-  grid-column: 1 / -1;
-  max-width: calc(50% - 6px);
-  margin: 0 auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -553,16 +519,6 @@ html.reduce-motion .hero-animate {
   .bundle-grid {
     grid-template-columns: repeat(5, 1fr);
     gap: 16px;
-  }
-
-  .bundle-card {
-    max-height: none;
-  }
-
-  .bundle-card:nth-child(5) {
-    grid-column: span 1;
-    max-width: none;
-    margin: 0;
   }
 
   .bundle-outcome {
@@ -640,9 +596,9 @@ html.reduce-motion .hero-animate {
 
 .your-price-amount {
   margin-top: 6px;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: clamp(34px, 10vw, 46px);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-gold);
 }
 
@@ -1520,9 +1476,9 @@ html.reduce-motion .sticky-cta {
 }
 
 .checkout-total-today-price {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-gold);
   font-variant-numeric: tabular-nums;
 }
