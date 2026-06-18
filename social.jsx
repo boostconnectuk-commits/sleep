@@ -1,4 +1,4 @@
-/* Testimonials, guarantee, and final CTA sections. */
+/* Testimonials, social proof, and final CTA sections. */
 const TESTIMONIALS = [
   {
     id: "sarah-m",
@@ -110,49 +110,48 @@ function Testimonials() {
   );
 }
 
-function GuaranteeBadge() {
+function RatingBadge() {
   return (
-    <div className="guarantee-badge" aria-hidden="true">
+    <div className="rating-badge" aria-hidden="true">
       <svg className="badge-ring" viewBox="0 0 100 100">
         <defs>
           <path id="badgeRingPath" d="M 50,50 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0" />
         </defs>
         <text dy="2">
           <textPath href="#badgeRingPath">
-            30-DAY GUARANTEE &bull; RISK FREE &bull; 30-DAY GUARANTEE &bull; RISK FREE &bull;
+            4.9 RATING &bull; 3,200+ HELPED &bull; 4.9 RATING &bull; 3,200+ HELPED &bull;
           </textPath>
         </text>
       </svg>
       <div className="badge-center">
-        <i data-lucide="shield-check"></i>
+        <i data-lucide="star"></i>
       </div>
     </div>
   );
 }
 
-function Guarantee() {
+function SocialProof() {
   return (
-    <section className="section" id="guarantee">
+    <section className="section" id="social-proof">
       <div className="container">
         <BSF.Reveal as="div" className="section-header">
-          <GuaranteeBadge />
-          <h2 className="section-title">Sleep on it. Literally.</h2>
+          <RatingBadge />
+          <h2 className="section-title">Join 3,200+ people who are finally sleeping.</h2>
           <p className="subheadline">
-            Try The Burnout Sleep Fix for 30 days. Use it. Follow the 7 nights. Print the tracker. Listen to
-            every audio. If it doesn&rsquo;t change the way you sleep, email us and we&rsquo;ll refund every cent.
-            No questions. No forms. No guilt.
+            Real people, real nights. Most start noticing a shift by night three, and by night seven the
+            loop has lost its grip.
           </p>
         </BSF.Reveal>
 
         <BSF.Reveal as="div" className="pill-row" index={1}>
           <span className="pill">
-            <i data-lucide="calendar"></i> 30 full days
+            <i data-lucide="star"></i> 4.9 average rating
           </span>
           <span className="pill">
-            <i data-lucide="rotate-ccw"></i> 100% refund
+            <i data-lucide="users"></i> 3,200+ people helped
           </span>
           <span className="pill">
-            <i data-lucide="thumbs-up"></i> No questions asked
+            <i data-lucide="moon"></i> 7-night guided system
           </span>
         </BSF.Reveal>
 
@@ -160,7 +159,7 @@ function Guarantee() {
           <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
             Start tonight - $29
           </a>
-          <span className="guarantee-microcopy">30-day money-back guarantee</span>
+          <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
         </BSF.Reveal>
       </div>
     </section>
@@ -183,7 +182,7 @@ function FinalCTA() {
           <a href="#" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
             Get The Burnout Sleep Fix &rarr;
           </a>
-          <span className="guarantee-microcopy">30-day money-back guarantee</span>
+          <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
         </BSF.Reveal>
       </div>
     </section>
@@ -191,5 +190,5 @@ function FinalCTA() {
 }
 
 window.Testimonials = Testimonials;
-window.Guarantee = Guarantee;
+window.SocialProof = SocialProof;
 window.FinalCTA = FinalCTA;

@@ -130,7 +130,7 @@ html.reduce-motion .announcement-bar {
   width: 100%;
 }
 
-.guarantee-microcopy {
+.cta-feature-note {
   display: block;
   margin-top: 10px;
   text-align: center;
@@ -866,7 +866,7 @@ html.reduce-motion .hero-animate {
 /* Guarantee badge                                                          */
 /* ---------------------------------------------------------------------- */
 
-.guarantee-badge {
+.rating-badge {
   position: relative;
   width: 136px;
   height: 136px;
@@ -988,7 +988,7 @@ html.reduce-motion .hero-animate {
   margin: 0 auto;
 }
 
-.sticky-cta-guarantee {
+.sticky-cta-feature {
   display: block;
   margin-top: 6px;
   text-align: center;
@@ -1642,7 +1642,7 @@ html.reduce-motion .sticky-cta {
   height: 13px;
 }
 
-.checkout-guarantee-box {
+.checkout-trust-box {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -1653,7 +1653,7 @@ html.reduce-motion .sticky-cta {
   background: var(--color-gold-soft);
 }
 
-.checkout-guarantee-box svg {
+.checkout-trust-box svg {
   width: 20px;
   height: 20px;
   margin-top: 2px;
@@ -1661,14 +1661,14 @@ html.reduce-motion .sticky-cta {
   color: var(--color-gold);
 }
 
-.checkout-guarantee-box-title {
+.checkout-trust-box-title {
   font-family: var(--font-serif);
   font-size: 13px;
   font-weight: 600;
   color: var(--color-text);
 }
 
-.checkout-guarantee-box-desc {
+.checkout-trust-box-desc {
   margin-top: 3px;
   font-size: 12px;
   line-height: 1.5;

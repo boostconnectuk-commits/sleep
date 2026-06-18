@@ -268,7 +268,7 @@ function Checkout({ open, onClose }) {
             {paymentStatus === "error" && paymentError && (
               <div className="checkout-pay-error">{paymentError}</div>
             )}
-            <span className="guarantee-microcopy">30-day money-back guarantee</span>
+            <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
 
             <div className="checkout-trust-row checkout-anim" style={{ "--reveal-index": 5 }}>
               <span>
@@ -282,12 +282,12 @@ function Checkout({ open, onClose }) {
               </span>
             </div>
 
-            <div className="checkout-guarantee-box checkout-anim" style={{ "--reveal-index": 6 }}>
-              <i data-lucide="shield" aria-hidden="true"></i>
+            <div className="checkout-trust-box checkout-anim" style={{ "--reveal-index": 6 }}>
+              <i data-lucide="users" aria-hidden="true"></i>
               <div>
-                <div className="checkout-guarantee-box-title">Sleep on it. Literally.</div>
-                <div className="checkout-guarantee-box-desc">
-                  Try it for 30 days. If it doesn&rsquo;t work, email us and we&rsquo;ll refund every cent.
+                <div className="checkout-trust-box-title">Join 3,200+ people sleeping better.</div>
+                <div className="checkout-trust-box-desc">
+                  Real testimonials, real nights. Everything unlocks the moment you pay.
                 </div>
               </div>
             </div>

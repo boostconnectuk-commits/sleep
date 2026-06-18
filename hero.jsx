@@ -271,7 +271,7 @@ function Hero() {
           <a href="#offer" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
             Start sleeping tonight &rarr;
           </a>
-          <span className="guarantee-microcopy">30-day money-back guarantee</span>
+          <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
         </div>
       </div>
     </section>

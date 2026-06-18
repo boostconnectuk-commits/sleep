@@ -26,7 +26,7 @@ function ValueStack() {
           <Stat value="5" label="Items included" />
           <Stat value={`$${total}`} label="Total value" variant="faint" />
           <Stat value="$29" label="Your price today" variant="gold" />
-          <Stat value="30" label="Day guarantee" />
+          <Stat value="3,200+" label="People helped" />
         </BSF.Reveal>
 
         <BSF.Reveal as="div" className="value-table" index={2}>
@@ -53,7 +53,7 @@ function ValueStack() {
           <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
             I&rsquo;m ready to sleep
           </a>
-          <span className="guarantee-microcopy">One payment. Instant access. No subscription.</span>
+          <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
         </BSF.Reveal>
       </div>
     </section>

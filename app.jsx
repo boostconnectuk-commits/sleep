@@ -71,7 +71,7 @@ function StickyCta() {
         <a href="#cta" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
           Start sleeping tonight for $29
         </a>
-        <span className="sticky-cta-guarantee">Risk-free for 30 days</span>
+        <span className="sticky-cta-feature">Instant download &bull; Lifetime access</span>
       </div>
     </div>
   );
@@ -112,7 +112,7 @@ function App() {
         <hr className="section-divider" />
         <Testimonials />
         <hr className="section-divider" />
-        <Guarantee />
+        <SocialProof />
         <hr className="section-divider" />
         <Faq />
         <hr className="section-divider" />

@@ -18,7 +18,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What if it doesn't work for me?",
-    a: "Email support@burnoutsleep.rest within 30 days and we'll refund you in full. No questionnaire, no hoops, no “but did you really try it” conversation. If it didn't help, you get your money back. That's it."
+    a: "Most people notice something shift by night three. If you follow the seven nights and still aren't sleeping better, email support@burnoutsleep.rest, we'll help you figure out what's getting in the way."
   }
 ];
 
