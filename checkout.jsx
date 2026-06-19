@@ -224,6 +224,9 @@ function Checkout({ open, onClose }) {
     }
 
     if (paymentIntent && paymentIntent.status === "succeeded") {
+      if (typeof fbq === "function") {
+        fbq("track", "Purchase", { value: totalToday, currency: "USD" });
+      }
       setPaymentStatus("success");
     } else {
       setPaymentStatus("idle");

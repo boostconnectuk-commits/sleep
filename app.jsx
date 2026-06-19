@@ -84,13 +84,25 @@ function App() {
 
   BSF.openCheckout = (e) => {
     if (e) e.preventDefault();
+    if (typeof fbq === "function") fbq("track", "InitiateCheckout");
     setCheckoutOpen(true);
+    if (window.location.pathname.replace(/\/$/, "") !== "/get-bundle") {
+      window.history.pushState(null, "", "/get-bundle");
+    }
   };
 
   React.useEffect(() => {
     if (window.lucide && typeof window.lucide.createIcons === "function") {
       window.lucide.createIcons();
     }
+  }, []);
+
+  React.useEffect(() => {
+    const handlePopState = () => {
+      setCheckoutOpen(window.location.pathname.replace(/\/$/, "") === "/get-bundle");
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   return (
