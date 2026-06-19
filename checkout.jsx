@@ -17,9 +17,6 @@ function CheckoutItem({ item, index }) {
 function Checkout({ open, onClose }) {
   const total = BSF.BUNDLE_ITEMS.reduce((sum, item) => sum + item.value, 0);
   const bundlePrice = 29;
-  const savings = total - bundlePrice;
-  const savingsPct = Math.round((savings / total) * 100);
-  const totalToday = bundlePrice;
 
   /* stripeStatus: idle | loading | unconfigured | ready | error */
   const [stripeStatus, setStripeStatus] = React.useState("idle");
@@ -27,10 +24,26 @@ function Checkout({ open, onClose }) {
   const [paymentStatus, setPaymentStatus] = React.useState("idle");
   const [paymentError, setPaymentError] = React.useState(null);
 
+  /* couponStatus: idle | checking | applied | error */
+  const [couponInput, setCouponInput] = React.useState("");
+  const [couponStatus, setCouponStatus] = React.useState("idle");
+  const [couponError, setCouponError] = React.useState(null);
+  const [appliedCoupon, setAppliedCoupon] = React.useState(null);
+
   const stripeRef = React.useRef(null);
   const elementsRef = React.useRef(null);
   const paymentElementRef = React.useRef(null);
+  const paymentIntentIdRef = React.useRef(null);
   const initStartedRef = React.useRef(false);
+
+  const discount = appliedCoupon
+    ? appliedCoupon.amountOff
+      ? appliedCoupon.amountOff / 100
+      : Math.round(bundlePrice * (appliedCoupon.percentOff / 100) * 100) / 100
+    : 0;
+  const totalToday = Math.max(0, Math.round((bundlePrice - discount) * 100) / 100);
+  const savings = total - totalToday;
+  const savingsPct = Math.round((savings / total) * 100);
 
   React.useEffect(() => {
     if (!open) return undefined;
@@ -98,6 +111,7 @@ function Checkout({ open, onClose }) {
 
         stripeRef.current = stripe;
         elementsRef.current = elements;
+        paymentIntentIdRef.current = intent.paymentIntentId || null;
         setStripeStatus("ready");
       } catch (err) {
         setPaymentError(err.message);
@@ -108,6 +122,78 @@ function Checkout({ open, onClose }) {
     return undefined;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  const handleApplyCoupon = async () => {
+    const code = couponInput.trim();
+    if (!code) return;
+
+    setCouponStatus("checking");
+    setCouponError(null);
+
+    try {
+      const result = await fetch("/api/validate-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code })
+      }).then((r) => r.json());
+
+      if (result.configured === false) {
+        setCouponStatus("error");
+        setCouponError("Coupons aren't set up yet.");
+        return;
+      }
+
+      if (!result.valid) {
+        setCouponStatus("error");
+        setCouponError(result.error || "That code isn't valid.");
+        return;
+      }
+
+      setAppliedCoupon({
+        code: result.code,
+        percentOff: result.percentOff,
+        amountOff: result.amountOff
+      });
+      setCouponStatus("applied");
+
+      const discountedAmount = result.amountOff
+        ? bundlePrice - result.amountOff / 100
+        : bundlePrice - bundlePrice * (result.percentOff / 100);
+      const newTotal = Math.max(0, Math.round(discountedAmount * 100) / 100);
+
+      if (paymentIntentIdRef.current) {
+        await fetch("/api/update-payment-intent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            paymentIntentId: paymentIntentIdRef.current,
+            amount: Math.round(newTotal * 100)
+          })
+        });
+      }
+    } catch (err) {
+      setCouponStatus("error");
+      setCouponError("Couldn't check that code. Try again.");
+    }
+  };
+
+  const handleRemoveCoupon = async () => {
+    setAppliedCoupon(null);
+    setCouponStatus("idle");
+    setCouponInput("");
+    setCouponError(null);
+
+    if (paymentIntentIdRef.current) {
+      await fetch("/api/update-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentIntentId: paymentIntentIdRef.current,
+          amount: Math.round(bundlePrice * 100)
+        })
+      });
+    }
+  };
 
   React.useEffect(() => {
     if (window.lucide && typeof window.lucide.createIcons === "function") {
@@ -197,12 +283,59 @@ function Checkout({ open, onClose }) {
               </div>
             </div>
 
-            <div className="checkout-savings checkout-anim" style={{ "--reveal-index": 7 }}>
+            <div className="checkout-coupon checkout-anim" style={{ "--reveal-index": 7 }}>
+              {appliedCoupon ? (
+                <div className="checkout-coupon-applied">
+                  <i data-lucide="badge-percent" aria-hidden="true"></i>
+                  <span>
+                    Code <strong>{appliedCoupon.code}</strong> applied
+                  </span>
+                  <button type="button" className="checkout-coupon-remove" onClick={handleRemoveCoupon}>
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="checkout-coupon-form">
+                  <input
+                    type="text"
+                    className="checkout-coupon-input"
+                    placeholder="Coupon code"
+                    value={couponInput}
+                    onChange={(e) => {
+                      setCouponInput(e.target.value);
+                      if (couponStatus === "error") {
+                        setCouponStatus("idle");
+                        setCouponError(null);
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleApplyCoupon();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="checkout-coupon-apply"
+                    onClick={handleApplyCoupon}
+                    disabled={!couponInput.trim() || couponStatus === "checking"}
+                  >
+                    {couponStatus === "checking" ? "Checking…" : "Apply"}
+                  </button>
+                </div>
+              )}
+              {couponStatus === "error" && couponError && (
+                <div className="checkout-coupon-error">{couponError}</div>
+              )}
+            </div>
+
+            <div className="checkout-savings checkout-anim" style={{ "--reveal-index": 8 }}>
               <i data-lucide="sparkles" aria-hidden="true"></i>
               You save ${savings} ({savingsPct}% off)
             </div>
 
-            <div className="checkout-total-today checkout-anim" style={{ "--reveal-index": 8 }}>
+            <div className="checkout-total-today checkout-anim" style={{ "--reveal-index": 9 }}>
               <span className="checkout-total-today-label">Total today</span>
               <span className="checkout-total-today-price">
                 ${totalToday}
@@ -228,7 +361,12 @@ function Checkout({ open, onClose }) {
                 <input id="checkout-name" type="text" placeholder="Jordan Smith" autoComplete="name" />
               </div>
 
-              <div className="checkout-anim" style={{ "--reveal-index": 3 }}>
+              <div className="checkout-field checkout-anim" style={{ "--reveal-index": 3 }}>
+                <label htmlFor="checkout-phone">Mobile number</label>
+                <input id="checkout-phone" type="tel" placeholder="+1 555 123 4567" autoComplete="tel" />
+              </div>
+
+              <div className="checkout-anim" style={{ "--reveal-index": 4 }}>
                 {stripeStatus === "unconfigured" && (
                   <div className="checkout-card-mount">
                     <i data-lucide="credit-card" aria-hidden="true"></i>
@@ -258,7 +396,7 @@ function Checkout({ open, onClose }) {
             <button
               type="button"
               className="btn btn-gold btn-block checkout-pay-btn checkout-anim"
-              style={{ "--reveal-index": 4 }}
+              style={{ "--reveal-index": 5 }}
               onClick={handlePay}
               disabled={stripeStatus !== "ready" || paymentStatus === "processing"}
             >
@@ -270,7 +408,7 @@ function Checkout({ open, onClose }) {
             )}
             <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
 
-            <div className="checkout-trust-row checkout-anim" style={{ "--reveal-index": 5 }}>
+            <div className="checkout-trust-row checkout-anim" style={{ "--reveal-index": 6 }}>
               <span>
                 <i data-lucide="lock" aria-hidden="true"></i> SSL secure
               </span>
@@ -282,7 +420,7 @@ function Checkout({ open, onClose }) {
               </span>
             </div>
 
-            <div className="checkout-trust-box checkout-anim" style={{ "--reveal-index": 6 }}>
+            <div className="checkout-trust-box checkout-anim" style={{ "--reveal-index": 7 }}>
               <i data-lucide="users" aria-hidden="true"></i>
               <div>
                 <div className="checkout-trust-box-title">Join 3,200+ people sleeping better.</div>
