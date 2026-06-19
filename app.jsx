@@ -95,6 +95,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <VercelAnalytics />
       <TweaksPanel />
       <AnnouncementBar />
       <main>
