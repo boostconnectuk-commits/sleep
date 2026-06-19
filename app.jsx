@@ -78,7 +78,9 @@ function StickyCta() {
 }
 
 function App() {
-  const [checkoutOpen, setCheckoutOpen] = React.useState(false);
+  const [checkoutOpen, setCheckoutOpen] = React.useState(
+    () => window.location.pathname.replace(/\/$/, "") === "/get-bundle"
+  );
 
   BSF.openCheckout = (e) => {
     if (e) e.preventDefault();
@@ -119,7 +121,15 @@ function App() {
         <FinalCTA />
       </main>
       <StickyCta />
-      <Checkout open={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+      <Checkout
+        open={checkoutOpen}
+        onClose={() => {
+          setCheckoutOpen(false);
+          if (window.location.pathname.replace(/\/$/, "") === "/get-bundle") {
+            window.history.replaceState(null, "", "/");
+          }
+        }}
+      />
       <Footer />
     </React.Fragment>
   );

@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/get-bundle", "destination": "/index.html" },
+    { "source": "/get-bundle/", "destination": "/index.html" }
+  ]
+}
