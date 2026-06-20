@@ -84,7 +84,6 @@ function App() {
 
   BSF.openCheckout = (e) => {
     if (e) e.preventDefault();
-    if (typeof fbq === "function") fbq("track", "InitiateCheckout");
     setCheckoutOpen(true);
     if (window.location.pathname.replace(/\/$/, "") !== "/get-bundle") {
       window.history.pushState(null, "", "/get-bundle");
@@ -96,6 +95,10 @@ function App() {
       window.lucide.createIcons();
     }
   }, []);
+
+  React.useEffect(() => {
+    if (checkoutOpen && typeof fbq === "function") fbq("track", "InitiateCheckout");
+  }, [checkoutOpen]);
 
   React.useEffect(() => {
     const handlePopState = () => {

@@ -215,6 +215,19 @@ html.reduce-motion .announcement-bar {
   margin-top: 6px;
 }
 
+.hero-bundle-image {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 8px;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.45));
+}
+
+@media (min-width: 768px) {
+  .hero-bundle-image {
+    max-width: 560px;
+  }
+}
+
 /* Staggered hero entry */
 
 @keyframes heroFadeUp {

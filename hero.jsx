@@ -273,6 +273,13 @@ function Hero() {
           </a>
           <span className="cta-feature-note">Instant download &bull; Lifetime access</span>
         </div>
+
+        <img
+          src="assets/sleep-fix-bundle.png"
+          alt="The Burnout Sleep Fix 5-in-1 bundle"
+          className="hero-bundle-image hero-animate"
+          style={{ "--hero-delay": 8 }}
+        />
       </div>
     </section>
   );
