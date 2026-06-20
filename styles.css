@@ -327,8 +327,7 @@ h1, h2, h3 {
   .shooting,
   .hero-particle,
   .badge-ring,
-  .strike-line,
-  [data-pulse] {
+  .strike-line {
     animation: none !important;
   }
 }
@@ -348,7 +347,6 @@ html.reduce-motion .star,
 html.reduce-motion .shooting,
 html.reduce-motion .hero-particle,
 html.reduce-motion .badge-ring,
-html.reduce-motion .strike-line,
-html.reduce-motion [data-pulse] {
+html.reduce-motion .strike-line {
   animation: none !important;
 }

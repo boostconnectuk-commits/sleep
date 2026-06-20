@@ -30,6 +30,7 @@ function AnnouncementBar() {
 
 function StickyCta() {
   const [visible, setVisible] = React.useState(false);
+  const showTimerRef = React.useRef(null);
 
   React.useEffect(() => {
     const hero = document.querySelector(".hero");
@@ -38,7 +39,25 @@ function StickyCta() {
 
     let heroVisible = true;
     let ctaVisible = false;
-    const update = () => setVisible(!heroVisible && !ctaVisible);
+
+    const update = () => {
+      const shouldShow = !heroVisible && !ctaVisible;
+
+      if (shouldShow) {
+        if (!showTimerRef.current) {
+          showTimerRef.current = setTimeout(() => {
+            showTimerRef.current = null;
+            setVisible(true);
+          }, 1200);
+        }
+      } else {
+        if (showTimerRef.current) {
+          clearTimeout(showTimerRef.current);
+          showTimerRef.current = null;
+        }
+        setVisible(false);
+      }
+    };
 
     const heroObserver = new IntersectionObserver(
       ([entry]) => {
@@ -62,6 +81,7 @@ function StickyCta() {
     return () => {
       heroObserver.disconnect();
       ctaObserver.disconnect();
+      if (showTimerRef.current) clearTimeout(showTimerRef.current);
     };
   }, []);
 

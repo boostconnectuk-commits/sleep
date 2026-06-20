@@ -99,101 +99,12 @@ BSF.StarIcon = function StarIcon(props) {
 };
 
 /* ------------------------------------------------------------------ */
-/* useCountdown — persists an end-time so the offer clock survives a    */
-/* refresh, resetting once it actually reaches zero                     */
-/* ------------------------------------------------------------------ */
-BSF.useCountdown = function useCountdown(durationSeconds) {
-  const [remaining, setRemaining] = React.useState(durationSeconds);
-
-  React.useEffect(() => {
-    const STORAGE_KEY = "bsf_offer_end";
-    let end;
-
-    try {
-      end = parseInt(localStorage.getItem(STORAGE_KEY), 10);
-    } catch (err) {
-      end = NaN;
-    }
-
-    const now = Date.now();
-    if (!end || end <= now) {
-      end = now + durationSeconds * 1000;
-      try {
-        localStorage.setItem(STORAGE_KEY, String(end));
-      } catch (err) {
-        /* storage unavailable — countdown still works for this session */
-      }
-    }
-
-    const tick = () => {
-      let rem = Math.round((end - Date.now()) / 1000);
-      if (rem <= 0) {
-        end = Date.now() + durationSeconds * 1000;
-        try {
-          localStorage.setItem(STORAGE_KEY, String(end));
-        } catch (err) {
-          /* storage unavailable — countdown still resets for this session */
-        }
-        rem = durationSeconds;
-      }
-      setRemaining(rem);
-    };
-
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [durationSeconds]);
-
-  return {
-    hours: Math.floor(remaining / 3600),
-    minutes: Math.floor((remaining % 3600) / 60),
-    seconds: remaining % 60
-  };
-};
-
-/* ------------------------------------------------------------------ */
-/* usePulse — true for 200ms whenever the given value changes           */
-/* ------------------------------------------------------------------ */
-function usePulse(value) {
-  const [pulsing, setPulsing] = React.useState(false);
-  const prev = React.useRef(value);
-
-  React.useEffect(() => {
-    if (prev.current !== value) {
-      prev.current = value;
-      setPulsing(true);
-      const t = setTimeout(() => setPulsing(false), 200);
-      return () => clearTimeout(t);
-    }
-    return undefined;
-  }, [value]);
-
-  return pulsing;
-}
-
-BSF.usePulse = usePulse;
-
-/* ------------------------------------------------------------------ */
 /* openCheckout — overwritten by App once mounted; safe no-op default   */
 /* keeps CTAs clickable before hydration finishes                       */
 /* ------------------------------------------------------------------ */
 BSF.openCheckout = function openCheckout(e) {
   if (e) e.preventDefault();
 };
-
-function CountdownUnit({ value, label }) {
-  const padded = String(value).padStart(2, "0");
-  const pulsing = usePulse(padded);
-
-  return (
-    <div className="countdown-unit">
-      <div className="countdown-digits" data-pulse={pulsing ? "true" : "false"}>
-        {padded}
-      </div>
-      <div className="countdown-label">{label}</div>
-    </div>
-  );
-}
 
 function HeroParticles() {
   const particles = React.useMemo(
@@ -229,37 +140,23 @@ function HeroParticles() {
 }
 
 function Hero() {
-  const { hours, minutes, seconds } = BSF.useCountdown(48 * 60 * 60);
-
   return (
     <section className="hero section">
       <HeroParticles />
       <div className="container hero-content">
-        <div className="hero-eyebrow-wrap hero-animate" style={{ "--hero-delay": 0 }}>
-          <span className="eyebrow">For the exhausted-but-wired</span>
-        </div>
-
-        <h1 className="headline-hero hero-headline hero-animate hero-animate--scale" style={{ "--hero-delay": 1 }}>
+        <h1 className="headline-hero hero-headline hero-animate hero-animate--scale" style={{ "--hero-delay": 0 }}>
           You&rsquo;re exhausted. But your body won&rsquo;t let you sleep.
         </h1>
 
-        <p className="subheadline hero-subheadline hero-animate" style={{ "--hero-delay": 3 }}>
+        <p className="subheadline hero-subheadline hero-animate" style={{ "--hero-delay": 1 }}>
           Seven guided nights to break the burnout-sleep loop, for the person who&rsquo;s drained all day and wide awake at 3am.
         </p>
 
-        <p className="quote hero-quote hero-animate" style={{ "--hero-delay": 4 }}>
+        <p className="quote hero-quote hero-animate" style={{ "--hero-delay": 2 }}>
           &ldquo;Your body has been bracing for a danger that isn&rsquo;t there. Tonight, it can finally stand down.&rdquo;
         </p>
 
-        <div className="countdown hero-animate" style={{ "--hero-delay": 5 }}>
-          <CountdownUnit value={hours} label="Hours" />
-          <span className="countdown-sep">:</span>
-          <CountdownUnit value={minutes} label="Mins" />
-          <span className="countdown-sep">:</span>
-          <CountdownUnit value={seconds} label="Secs" />
-        </div>
-
-        <div className="price-stack hero-animate" style={{ "--hero-delay": 6 }}>
+        <div className="price-stack hero-animate" style={{ "--hero-delay": 3 }}>
           <div className="price-row">
             <BSF.PriceStrike amount="$149" />
             <span className="price-new">$29</span>
@@ -267,7 +164,7 @@ function Hero() {
           <span className="price-label">your price today</span>
         </div>
 
-        <div className="hero-cta-wrap hero-animate" style={{ "--hero-delay": 7 }}>
+        <div className="hero-cta-wrap hero-animate" style={{ "--hero-delay": 4 }}>
           <a href="#offer" className="btn btn-gold btn-block" onClick={BSF.openCheckout}>
             Start sleeping tonight &rarr;
           </a>
@@ -278,7 +175,7 @@ function Hero() {
           src="assets/sleep-fix-bundle.png"
           alt="The Burnout Sleep Fix 5-in-1 bundle"
           className="hero-bundle-image hero-animate"
-          style={{ "--hero-delay": 8 }}
+          style={{ "--hero-delay": 5 }}
         />
       </div>
     </section>
